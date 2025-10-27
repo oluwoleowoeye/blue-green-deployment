@@ -26,3 +26,10 @@ This project demonstrates a blue-green deployment strategy for Node.js services 
    cd blue-green-nodejs
    cp .env.example .env
    # Edit .env if needed
+2. **Start the services**:
+   ```bash
+   docker-compose up -d
+2. **Verify deplyment**:
+   ```bash
+   curl http://localhost:8080/version
+
