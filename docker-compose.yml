@@ -1,4 +1,20 @@
 services:
+  app_blue:
+    image: yimikaade/wonderful:latest
+    environment:
+      - APP_POOL=blue
+      - RELEASE_ID=release-blue-v1.0.0
+    networks:
+      - app-network
+
+  app_green:
+    image: yimikaade/wonderful:latest
+    environment:
+      - APP_POOL=green
+      - RELEASE_ID=release-green-v1.0.0
+    networks:
+      - app-network
+
   nginx:
     image: nginx:alpine
     ports:
@@ -8,23 +24,31 @@ services:
       - "8082:8082"
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx-logs:/var/log/nginx
+    networks:
+      - app-network
     depends_on:
       - app_blue
       - app_green
-    restart: unless-stopped
 
-  app_blue:
-    image: yimikaade/wonderful:latest
+  watcher:
+    build: .
     environment:
-      - APP_POOL=blue
-      - RELEASE_ID=release-blue-v1.0.0
-      - PORT=3000
-    restart: unless-stopped
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - ACTIVE_POOL=${ACTIVE_POOL}
+      - ERROR_RATE_THRESHOLD=${ERROR_RATE_THRESHOLD}
+      - WINDOW_SIZE=${WINDOW_SIZE}
+      - ALERT_COOLDOWN_SEC=${ALERT_COOLDOWN_SEC}
+    volumes:
+      - nginx-logs:/var/log/nginx:ro
+    networks:
+      - app-network
+    depends_on:
+      - nginx
 
-  app_green:
-    image: yimikaade/wonderful:latest
-    environment:
-      - APP_POOL=green
-      - RELEASE_ID=release-green-v1.0.0
-      - PORT=3000
-    restart: unless-stopped
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  nginx-logs:
