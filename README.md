@@ -82,4 +82,4 @@ Check your Slack channel for:
 ## Screenshots:
 
 # Slack alerts for failovers and error rates
-![Uploading blue to green3.png…]()
+ `![Blue to Green Failover](./blue-to-green3.png)`
