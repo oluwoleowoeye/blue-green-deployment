@@ -80,5 +80,6 @@ Check your Slack channel for:
 ⚠️ High Error Rate alerts (>2% 5xx errors)
 
 ## Screenshots:
+
 # Slack alerts for failovers and error rates
-![(<img width="535" height="148" alt="image" src="https://github.com/user-attachments/assets/9937ecac-1703-4673-a501-c88b80533219" />)]
+![Uploading blue to green3.png…]()
